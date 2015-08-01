@@ -18,7 +18,7 @@ export default class Pager extends React.Component {
       sceneTotal: 5,
       defaultSceneIndex: 0,
       icon: {
-        color: '#DADADA',
+        color: 'red',
         background: 'transparent',
       },
       prevNext: 'arrows',
@@ -41,7 +41,6 @@ export default class Pager extends React.Component {
     } else if (index < (this.props.sceneTotal - 1)) {
       index++;
     }
-
     this.changeIndex(index);
   }
   // page indexes:
@@ -61,8 +60,6 @@ export default class Pager extends React.Component {
   render() {
     const sceneIndex = this.state.sceneIndex;
     const sceneTotal = this.props.sceneTotal;
-    // Left and right arrows
-    // Class strings to hide at start/finish
     let leftClass = 'Pager-previous';
     let rightClass = 'Pager-next';
     if (sceneIndex === 0) {
@@ -70,32 +67,26 @@ export default class Pager extends React.Component {
     } else if (sceneIndex === (sceneTotal - 1)) {
       rightClass += ' Pager-arrow-hidden';
     }
+    let previousArrow;
+    let nextArrow;
     let previous;
     let next;
     if (this.props.prevNext === 'arrows') {
-      previous = (
-        <li className={leftClass} key="left" onClick = {this.prevNext.bind(this, 'left')}>
-          <Icon icon="left" background={this.props.icon.background} color={this.props.icon.color}/>
-        </li>
-      );
-      next = (
-        <li className={rightClass} key="right" onClick = {this.prevNext.bind(this, 'right')}>
-          <Icon icon="right" background={this.props.icon.background} color={this.props.icon.color}/>
-        </li>
-      );
+      previousArrow = <Icon icon="left" background={this.props.icon.background} color={this.props.icon.color}/>;
+      nextArrow = <Icon icon="right" background={this.props.icon.background} color={this.props.icon.color}/>;
     }
-    if (this.props.prevNext === 'strings') {
-      previous = (
-        <li className={leftClass} key="left" onClick = {this.prevNext.bind(this, 'left')}>
-          previous
-        </li>
-      );
-      next = (
-        <li className={rightClass} key="right" onClick = {this.prevNext.bind(this, 'right')}>
-          next
-        </li>
-      );
-    }
+    previous = (
+      <li className={leftClass} key="left" onClick = {this.prevNext.bind(this, 'left')}>
+        {previousArrow}
+        <span>previous</span>
+      </li>
+    );
+    next = (
+      <li className={rightClass} key="right" onClick = {this.prevNext.bind(this, 'right')}>
+        {nextArrow}
+        <span>next</span>
+      </li>
+    );
 
     // Page index
     const index = [];

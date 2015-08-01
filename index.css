@@ -8,12 +8,12 @@
 .Pager li {
   padding:0 20px;
   margin:0;
-  display: inline;
+  float:left;
   cursor: pointer;
+  list-style: none;
 }
 .Pager-previous,
 .Pager-next {
-  width: 30px;
   cursor: pointer;
 }
 .Pager-next {
@@ -23,6 +23,9 @@
 .Pager-next svg {
  width: 30px;
  height: 30px;
+}
+.Pager svg + span {
+  display: none;
 }
 .Pager-arrow-hidden {
   visibility:hidden;
