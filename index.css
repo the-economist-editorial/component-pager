@@ -1,0 +1,35 @@
+/* Overall Pager wrapper */
+.Pager {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  overflow:hidden;
+}
+.Pager li {
+  padding:0 20px;
+  margin:0;
+  display: inline;
+  cursor: pointer;
+}
+.Pager-previous,
+.Pager-next {
+  width: 30px;
+  cursor: pointer;
+}
+.Pager-next {
+  margin: 0 0 0 20px;
+}
+.Pager-previous svg,
+.Pager-next svg {
+ width: 30px;
+ height: 30px;
+}
+.Pager-arrow-hidden {
+  visibility:hidden;
+}
+.Pager-index {
+  width: 20px;
+}
+.Pager-index-selected {
+  text-decoration: underline;
+}
