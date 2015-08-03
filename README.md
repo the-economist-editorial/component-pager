@@ -1,3 +1,3 @@
-# component-sharebar
+# component-pager
 
-React component creates a scenechanger (arrow and dots)
+React component creates pager
