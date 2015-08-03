@@ -7,9 +7,8 @@ export default class Pager extends React.Component {
     return {
       sceneTotal: React.PropTypes.number,
       defaultSceneIndex: React.PropTypes.number,
-      showArrows: React.PropTypes.string,
+      showArrows: React.PropTypes.bool,
       icon: React.PropTypes.object,
-      onChangeIndex: React.PropTypes.func,
     };
   }
 
@@ -32,15 +31,18 @@ export default class Pager extends React.Component {
   }
 
   // EVENT LISTENERS
-  previous() {
+  onPreviousClick() {
     let index = this.state.sceneIndex;
-    if (index > 0) {
+    if (index === 0) {
+      index = this.props.sceneTotal;
+    } else {
       index--;
     }
     this.changeIndex(index);
   }
-    // EVENT LISTENERS
-  next() {
+
+  // EVENT LISTENERS
+  onNextClick() {
     let index = this.state.sceneIndex;
     if (index < (this.props.sceneTotal - 1)) {
       index++;
@@ -48,18 +50,13 @@ export default class Pager extends React.Component {
     this.changeIndex(index);
   }
 
-  // page indexes:
   indexClicked(index) {
     this.changeIndex(index);
   }
-  //
+
   changeIndex(newIndex) {
-    if (this.props.onChangeIndex) {
-      this.props.onChangeIndex(newIndex, this.state.sceneIndex);
-    }
     this.setState({ sceneIndex: newIndex });
   }
-
 
   // RENDER
   render() {
@@ -76,18 +73,18 @@ export default class Pager extends React.Component {
     let nextArrow;
     let previousBtn;
     let nextBtn;
-    if (this.props.showArrows === 'arrows') {
+    if (this.props.showArrows) {
       previousArrow = <Icon icon="left" background={this.props.icon.background} color={this.props.icon.color}/>;
       nextArrow = <Icon icon="right" background={this.props.icon.background} color={this.props.icon.color}/>;
     }
     previousBtn = (
-      <li className={leftClass} key="left" onClick = {this.previous.bind(this)}>
+      <li className={leftClass} key="left" onClick={this.onPreviousClick.bind(this)}>
         {previousArrow}
         <span>previous</span>
       </li>
     );
     nextBtn = (
-      <li className={rightClass} key="right" onClick = {this.next.bind(this)}>
+      <li className={rightClass} key="right" onClick={this.onNextClick.bind(this)}>
         {nextArrow}
         <span>next</span>
       </li>
