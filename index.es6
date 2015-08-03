@@ -7,7 +7,7 @@ export default class Pager extends React.Component {
     return {
       sceneTotal: React.PropTypes.number,
       defaultSceneIndex: React.PropTypes.number,
-      prevNext: React.PropTypes.string,
+      showArrows: React.PropTypes.string,
       icon: React.PropTypes.object,
       onChangeIndex: React.PropTypes.func,
     };
@@ -32,17 +32,22 @@ export default class Pager extends React.Component {
   }
 
   // EVENT LISTENERS
-  prevNext(arrow) {
+  previous() {
     let index = this.state.sceneIndex;
-    if (arrow === 'left') {
-      if (index > 0) {
-        index--;
-      }
-    } else if (index < (this.props.sceneTotal - 1)) {
+    if (index > 0) {
+      index--;
+    }
+    this.changeIndex(index);
+  }
+    // EVENT LISTENERS
+  next() {
+    let index = this.state.sceneIndex;
+    if (index < (this.props.sceneTotal - 1)) {
       index++;
     }
     this.changeIndex(index);
   }
+
   // page indexes:
   indexClicked(index) {
     this.changeIndex(index);
@@ -69,20 +74,20 @@ export default class Pager extends React.Component {
     }
     let previousArrow;
     let nextArrow;
-    let previous;
-    let next;
-    if (this.props.prevNext === 'arrows') {
+    let previousBtn;
+    let nextBtn;
+    if (this.props.showArrows === 'arrows') {
       previousArrow = <Icon icon="left" background={this.props.icon.background} color={this.props.icon.color}/>;
       nextArrow = <Icon icon="right" background={this.props.icon.background} color={this.props.icon.color}/>;
     }
-    previous = (
-      <li className={leftClass} key="left" onClick = {this.prevNext.bind(this, 'left')}>
+    previousBtn = (
+      <li className={leftClass} key="left" onClick = {this.previous.bind(this)}>
         {previousArrow}
         <span>previous</span>
       </li>
     );
-    next = (
-      <li className={rightClass} key="right" onClick = {this.prevNext.bind(this, 'right')}>
+    nextBtn = (
+      <li className={rightClass} key="right" onClick = {this.next.bind(this)}>
         {nextArrow}
         <span>next</span>
       </li>
@@ -106,9 +111,9 @@ export default class Pager extends React.Component {
     return (
       <div className="Pager">
         <ul>
-          {previous}
+          {previousBtn}
           {index}
-          {next}
+          {nextBtn}
         </ul>
       </div>
     );
