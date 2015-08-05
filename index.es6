@@ -8,7 +8,9 @@ export default class Pager extends React.Component {
       sceneTotal: React.PropTypes.number,
       defaultSceneIndex: React.PropTypes.number,
       showArrows: React.PropTypes.bool,
+      indexIsClickable: React.PropTypes.bool,
       icon: React.PropTypes.object,
+      onChangeIndex: React.PropTypes.func,
     };
   }
 
@@ -55,6 +57,9 @@ export default class Pager extends React.Component {
   }
 
   changeIndex(newIndex) {
+    if (this.props.onChangeIndex) {
+      this.props.onChangeIndex(newIndex, this.state.sceneIndex);
+    }
     this.setState({ sceneIndex: newIndex });
   }
 
@@ -98,11 +103,19 @@ export default class Pager extends React.Component {
       if (i === sceneIndex) {
         indexClass = 'Pager-index-selected';
       }
-      index.push(
-        <li key={i} onClick={this.indexClicked.bind(this, i)}>
-          <span className={indexClass}>{i + 1}</span>
-        </li>
-      );
+      if (this.props.indexIsClickable) {
+        index.push(
+          <li key={i} onClick={this.indexClicked.bind(this, i)} className="Pager-index-clickable">
+            <span className={indexClass}>{i + 1}</span>
+          </li>
+        );
+      } else {
+        index.push(
+          <li key={i}>
+            <span className={indexClass}>{i + 1}</span>
+          </li>
+        );
+      }
     }
     // Glue it all together
     return (

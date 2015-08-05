@@ -9,8 +9,10 @@
   padding:0 20px;
   margin:0;
   float:left;
-  cursor: pointer;
   list-style: none;
+}
+.Pager .Pager-index-clickable {
+  cursor: pointer;
 }
 .Pager-previous,
 .Pager-next {
