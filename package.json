@@ -73,7 +73,6 @@
     "test:watch": "npm run test:base -- -wR min"
   },
   "dependencies": {
-    "@economist/component-icon": "^3.0.2",
     "react": "^0.13.3"
   },
   "devDependencies": {

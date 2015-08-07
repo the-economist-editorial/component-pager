@@ -1,5 +1,4 @@
 import React from 'react';
-import Icon from '@economist/component-icon';
 
 export default class Pager extends React.Component {
 
@@ -7,9 +6,7 @@ export default class Pager extends React.Component {
     return {
       sceneTotal: React.PropTypes.number,
       defaultSceneIndex: React.PropTypes.number,
-      showArrows: React.PropTypes.bool,
       clickableIndexes: React.PropTypes.bool,
-      icon: React.PropTypes.object,
       onChangeIndex: React.PropTypes.func,
     };
   }
@@ -18,11 +15,6 @@ export default class Pager extends React.Component {
     return {
       sceneTotal: 5,
       defaultSceneIndex: 0,
-      icon: {
-        color: 'red',
-        background: 'transparent',
-      },
-      prevNext: 'arrows',
     };
   }
 
@@ -65,7 +57,7 @@ export default class Pager extends React.Component {
   }
 
   changeIndex(index) {
-    if (this.props.onChangeIndex) {
+    if (typeof this.props.onChangeIndex !== 'undefined') {
       this.props.onChangeIndex(index, this.state.sceneIndex);
     }
     this.setState({ sceneIndex: index });
@@ -75,34 +67,26 @@ export default class Pager extends React.Component {
   render() {
     const sceneIndex = this.state.sceneIndex;
     const sceneTotal = this.props.sceneTotal;
-    let leftClass = 'Pager-previous';
-    let rightClass = 'Pager-next';
+    let previousClass = 'Pager-previous';
+    let nextClass = 'Pager-next';
     if (sceneIndex === 0) {
-      leftClass += ' Pager-arrow-hidden';
+      previousClass += ' Pager-elm-hidden';
     } else if (sceneIndex === (sceneTotal - 1)) {
-      rightClass += ' Pager-arrow-hidden';
+      nextClass += ' Pager-elm-hidden';
     }
-    let previousArrow;
-    let nextArrow;
     let previousBtn;
     let nextBtn;
     let clickableClass;
     if (this.props.clickableIndexes) {
       clickableClass = 'Pager-index-clickable';
     }
-    if (this.props.showArrows) {
-      previousArrow = <Icon icon="left" background={this.props.icon.background} color={this.props.icon.color}/>;
-      nextArrow = <Icon icon="right" background={this.props.icon.background} color={this.props.icon.color}/>;
-    }
     previousBtn = (
-      <li className={leftClass} key="left">
-        {previousArrow}
+      <li className={previousClass} key="previous" data-item="previous">
         <span data-item="previous">previous</span>
       </li>
     );
     nextBtn = (
-      <li className={rightClass} key="right">
-        {nextArrow}
+      <li className={nextClass} key="next" data-item="next">
         <span data-item="next">next</span>
       </li>
     );
@@ -111,13 +95,13 @@ export default class Pager extends React.Component {
     const index = [];
     for (let i = 0; i < sceneTotal; i++) {
       // Class to highlight current index
-      let indexClass;
+      let indexClass = 'Pager-index';
       if (i === sceneIndex) {
-        indexClass = 'Pager-index-selected';
+        indexClass += ' Pager-index-selected';
       }
       index.push(
-        <li key={i}>
-          <span className={indexClass} data-item={i}>{i + 1}</span>
+        <li className={indexClass} key={i} data-item={i}>
+          <span data-item={i}>{i + 1}</span>
         </li>
       );
     }

@@ -21,15 +21,7 @@
 .Pager-next {
   margin: 0 0 0 20px;
 }
-.Pager-previous svg,
-.Pager-next svg {
- width: 30px;
- height: 30px;
-}
-.Pager svg + span {
-  display: none;
-}
-.Pager-arrow-hidden {
+.Pager-elm-hidden {
   visibility:hidden;
 }
 .Pager-index {
