@@ -52,15 +52,23 @@ export default class Pager extends React.Component {
     this.changeIndex(index);
   }
 
-  indexClicked(index) {
-    this.changeIndex(index);
+
+  indexClicked(e) {
+    const item = e.target.dataset.item;
+    if (item === 'previous') {
+      this.onPreviousClick();
+    } else if (item === 'next') {
+      this.onNextClick();
+    } else if (this.props.clickableIndexes) {
+      this.changeIndex(parseInt(item, 10));
+    }
   }
 
-  changeIndex(newIndex) {
+  changeIndex(index) {
     if (this.props.onChangeIndex) {
-      this.props.onChangeIndex(newIndex, this.state.sceneIndex);
+      this.props.onChangeIndex(index, this.state.sceneIndex);
     }
-    this.setState({ sceneIndex: newIndex });
+    this.setState({ sceneIndex: index });
   }
 
   // RENDER
@@ -78,20 +86,24 @@ export default class Pager extends React.Component {
     let nextArrow;
     let previousBtn;
     let nextBtn;
+    let clickableClass;
+    if (this.props.clickableIndexes) {
+      clickableClass = 'Pager-index-clickable';
+    }
     if (this.props.showArrows) {
       previousArrow = <Icon icon="left" background={this.props.icon.background} color={this.props.icon.color}/>;
       nextArrow = <Icon icon="right" background={this.props.icon.background} color={this.props.icon.color}/>;
     }
     previousBtn = (
-      <li className={leftClass} key="left" onClick={this.onPreviousClick.bind(this)}>
+      <li className={leftClass} key="left">
         {previousArrow}
-        <span>previous</span>
+        <span data-item="previous">previous</span>
       </li>
     );
     nextBtn = (
-      <li className={rightClass} key="right" onClick={this.onNextClick.bind(this)}>
+      <li className={rightClass} key="right">
         {nextArrow}
-        <span>next</span>
+        <span data-item="next">next</span>
       </li>
     );
 
@@ -103,24 +115,16 @@ export default class Pager extends React.Component {
       if (i === sceneIndex) {
         indexClass = 'Pager-index-selected';
       }
-      if (this.props.clickableIndexes) {
-        index.push(
-          <li key={i} onClick={this.indexClicked.bind(this, i)} className="Pager-index-clickable">
-            <span className={indexClass}>{i + 1}</span>
-          </li>
-        );
-      } else {
-        index.push(
-          <li key={i}>
-            <span className={indexClass}>{i + 1}</span>
-          </li>
-        );
-      }
+      index.push(
+        <li key={i}>
+          <span className={indexClass} data-item={i}>{i + 1}</span>
+        </li>
+      );
     }
     // Glue it all together
     return (
       <div className="Pager">
-        <ul>
+        <ul onClick={this.indexClicked.bind(this)} className={clickableClass}>
           {previousBtn}
           {index}
           {nextBtn}

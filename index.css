@@ -11,7 +11,7 @@
   float:left;
   list-style: none;
 }
-.Pager .Pager-index-clickable {
+.Pager .Pager-index-clickable li {
   cursor: pointer;
 }
 .Pager-previous,
@@ -37,4 +37,5 @@
 }
 .Pager-index-selected {
   text-decoration: underline;
+  cursor: default;
 }
