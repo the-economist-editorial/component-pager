@@ -4,7 +4,7 @@ export default class Pager extends React.Component {
 
   static get propTypes() {
     return {
-      sceneTotal: React.PropTypes.number,
+      indxLength: React.PropTypes.number.isRequired,
       defaultSceneIndex: React.PropTypes.number,
       clickableIndexes: React.PropTypes.bool,
       onChangeIndex: React.PropTypes.func,
@@ -13,7 +13,7 @@ export default class Pager extends React.Component {
 
   static get defaultProps() {
     return {
-      sceneTotal: 5,
+      indxLength: 5,
       defaultSceneIndex: 0,
     };
   }
@@ -28,7 +28,7 @@ export default class Pager extends React.Component {
   onPreviousClick() {
     let index = this.state.sceneIndex;
     if (index === 0) {
-      index = this.props.sceneTotal;
+      index = this.props.indxLength;
     } else {
       index--;
     }
@@ -38,12 +38,11 @@ export default class Pager extends React.Component {
   // EVENT LISTENERS
   onNextClick() {
     let index = this.state.sceneIndex;
-    if (index < (this.props.sceneTotal - 1)) {
+    if (index < (this.props.indxLength - 1)) {
       index++;
     }
     this.changeIndex(index);
   }
-
 
   indexClicked(e) {
     const item = e.target.dataset.item;
@@ -66,12 +65,12 @@ export default class Pager extends React.Component {
   // RENDER
   render() {
     const sceneIndex = this.state.sceneIndex;
-    const sceneTotal = this.props.sceneTotal;
+    const indxLength = this.props.indxLength;
     let previousClass = 'Pager-previous';
     let nextClass = 'Pager-next';
     if (sceneIndex === 0) {
       previousClass += ' Pager-elm-hidden';
-    } else if (sceneIndex === (sceneTotal - 1)) {
+    } else if (sceneIndex === (indxLength - 1)) {
       nextClass += ' Pager-elm-hidden';
     }
     let previousBtn;
@@ -93,7 +92,7 @@ export default class Pager extends React.Component {
 
     // Page index
     const index = [];
-    for (let i = 0; i < sceneTotal; i++) {
+    for (let i = 0; i < indxLength; i++) {
       // Class to highlight current index
       let indexClass = 'Pager-index';
       if (i === sceneIndex) {
