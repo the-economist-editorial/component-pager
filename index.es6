@@ -1,27 +1,20 @@
 import React from 'react';
-import Icon from '@economist/component-icon';
 
 export default class Pager extends React.Component {
 
   static get propTypes() {
     return {
-      sceneTotal: React.PropTypes.number,
+      indexTotal: React.PropTypes.number.isRequired,
       defaultSceneIndex: React.PropTypes.number,
-      prevNext: React.PropTypes.string,
-      icon: React.PropTypes.object,
+      clickableIndexes: React.PropTypes.bool,
       onChangeIndex: React.PropTypes.func,
     };
   }
 
   static get defaultProps() {
     return {
-      sceneTotal: 5,
+      indexTotal: 5,
       defaultSceneIndex: 0,
-      icon: {
-        color: 'red',
-        background: 'transparent',
-      },
-      prevNext: 'arrows',
     };
   }
 
@@ -32,83 +25,92 @@ export default class Pager extends React.Component {
   }
 
   // EVENT LISTENERS
-  prevNext(arrow) {
+  onPreviousClick() {
     let index = this.state.sceneIndex;
-    if (arrow === 'left') {
-      if (index > 0) {
-        index--;
-      }
-    } else if (index < (this.props.sceneTotal - 1)) {
+    if (index === 0) {
+      index = this.props.indexTotal;
+    } else {
+      index--;
+    }
+    this.changeIndex(index);
+  }
+
+  // EVENT LISTENERS
+  onNextClick() {
+    let index = this.state.sceneIndex;
+    if (index < (this.props.indexTotal - 1)) {
       index++;
     }
     this.changeIndex(index);
   }
-  // page indexes:
-  indexClicked(index) {
-    this.changeIndex(index);
-  }
-  //
-  changeIndex(newIndex) {
-    if (this.props.onChangeIndex) {
-      this.props.onChangeIndex(newIndex, this.state.sceneIndex);
+
+  indexClicked(e) {
+    const item = e.target.dataset.item;
+    if (item === 'previous') {
+      this.onPreviousClick();
+    } else if (item === 'next') {
+      this.onNextClick();
+    } else if (this.props.clickableIndexes) {
+      this.changeIndex(parseInt(item, 10));
     }
-    this.setState({ sceneIndex: newIndex });
   }
 
+  changeIndex(index) {
+    if (typeof this.props.onChangeIndex !== 'undefined') {
+      this.props.onChangeIndex(index, this.state.sceneIndex);
+    }
+    this.setState({ sceneIndex: index });
+  }
 
   // RENDER
   render() {
     const sceneIndex = this.state.sceneIndex;
-    const sceneTotal = this.props.sceneTotal;
-    let leftClass = 'Pager-previous';
-    let rightClass = 'Pager-next';
+    const indexTotal = this.props.indexTotal;
+    let previousClass = 'Pager-previous';
+    let nextClass = 'Pager-next';
     if (sceneIndex === 0) {
-      leftClass += ' Pager-arrow-hidden';
-    } else if (sceneIndex === (sceneTotal - 1)) {
-      rightClass += ' Pager-arrow-hidden';
+      previousClass += ' Pager-elm-hidden';
+    } else if (sceneIndex === (indexTotal - 1)) {
+      nextClass += ' Pager-elm-hidden';
     }
-    let previousArrow;
-    let nextArrow;
-    let previous;
-    let next;
-    if (this.props.prevNext === 'arrows') {
-      previousArrow = <Icon icon="left" background={this.props.icon.background} color={this.props.icon.color}/>;
-      nextArrow = <Icon icon="right" background={this.props.icon.background} color={this.props.icon.color}/>;
+    let previousBtn;
+    let nextBtn;
+    let clickableClass;
+    if (this.props.clickableIndexes) {
+      clickableClass = 'Pager-index-clickable';
     }
-    previous = (
-      <li className={leftClass} key="left" onClick = {this.prevNext.bind(this, 'left')}>
-        {previousArrow}
-        <span>previous</span>
+    previousBtn = (
+      <li className={previousClass} key="previous" data-item="previous">
+        <span data-item="previous">previous</span>
       </li>
     );
-    next = (
-      <li className={rightClass} key="right" onClick = {this.prevNext.bind(this, 'right')}>
-        {nextArrow}
-        <span>next</span>
+    nextBtn = (
+      <li className={nextClass} key="next" data-item="next">
+        <span data-item="next">next</span>
       </li>
     );
 
     // Page index
     const index = [];
-    for (let i = 0; i < sceneTotal; i++) {
+    for (let i = 0; i < indexTotal; i++) {
       // Class to highlight current index
-      let indexClass;
+      let indexClass = 'Pager-index';
       if (i === sceneIndex) {
-        indexClass = 'Pager-index-selected';
+        indexClass += ' Pager-index-selected';
       }
       index.push(
-        <li key={i} onClick={this.indexClicked.bind(this, i)}>
-          <span className={indexClass}>{i + 1}</span>
+        <li className={indexClass} key={i} data-item={i}>
+          <span data-item={i}>{i + 1}</span>
         </li>
       );
     }
     // Glue it all together
     return (
       <div className="Pager">
-        <ul>
-          {previous}
+        <ul onClick={this.indexClicked.bind(this)} className={clickableClass}>
+          {previousBtn}
           {index}
-          {next}
+          {nextBtn}
         </ul>
       </div>
     );
