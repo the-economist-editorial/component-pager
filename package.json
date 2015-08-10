@@ -31,7 +31,7 @@
       "/index.css"
     ],
     "js": [
-      "/node_modules/react/react.js?browserify&expose=react",
+      "/node_modules/react/addons.js?browserify&expose=react",
       {
         "contents": "window.React = require('react');"
       },

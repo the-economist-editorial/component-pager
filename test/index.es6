@@ -1,7 +1,22 @@
 import Pager from './../index.es6';
-import React from 'react/addons';
+import React from 'react';
 const TestUtils = React.addons.TestUtils;
 const TestEvents = React.addons.TestUtils.Simulate;
+describe('Pager', () => {
+  it('should exist', () => {
+    Pager.should.be.a('function');
+  });
+
+  it('renders a component', () => {
+    (<Pager/>).should.be.an('object');
+  });
+
+  it('is a react component', () => {
+    const defaultSceneIndex = 0;
+    (new Pager(defaultSceneIndex)).should.be.an.instanceOf(React.Component);
+  });
+});
+
 describe('Rendering', () => {
   const renderer = TestUtils.createRenderer();
   let component;

@@ -4,7 +4,7 @@ export default class Pager extends React.Component {
 
   static get propTypes() {
     return {
-      indxLength: React.PropTypes.number.isRequired,
+      indexTotal: React.PropTypes.number.isRequired,
       defaultSceneIndex: React.PropTypes.number,
       clickableIndexes: React.PropTypes.bool,
       onChangeIndex: React.PropTypes.func,
@@ -13,7 +13,7 @@ export default class Pager extends React.Component {
 
   static get defaultProps() {
     return {
-      indxLength: 5,
+      indexTotal: 5,
       defaultSceneIndex: 0,
     };
   }
@@ -28,7 +28,7 @@ export default class Pager extends React.Component {
   onPreviousClick() {
     let index = this.state.sceneIndex;
     if (index === 0) {
-      index = this.props.indxLength;
+      index = this.props.indexTotal;
     } else {
       index--;
     }
@@ -38,7 +38,7 @@ export default class Pager extends React.Component {
   // EVENT LISTENERS
   onNextClick() {
     let index = this.state.sceneIndex;
-    if (index < (this.props.indxLength - 1)) {
+    if (index < (this.props.indexTotal - 1)) {
       index++;
     }
     this.changeIndex(index);
@@ -65,12 +65,12 @@ export default class Pager extends React.Component {
   // RENDER
   render() {
     const sceneIndex = this.state.sceneIndex;
-    const indxLength = this.props.indxLength;
+    const indexTotal = this.props.indexTotal;
     let previousClass = 'Pager-previous';
     let nextClass = 'Pager-next';
     if (sceneIndex === 0) {
       previousClass += ' Pager-elm-hidden';
-    } else if (sceneIndex === (indxLength - 1)) {
+    } else if (sceneIndex === (indexTotal - 1)) {
       nextClass += ' Pager-elm-hidden';
     }
     let previousBtn;
@@ -92,7 +92,7 @@ export default class Pager extends React.Component {
 
     // Page index
     const index = [];
-    for (let i = 0; i < indxLength; i++) {
+    for (let i = 0; i < indexTotal; i++) {
       // Class to highlight current index
       let indexClass = 'Pager-index';
       if (i === sceneIndex) {
